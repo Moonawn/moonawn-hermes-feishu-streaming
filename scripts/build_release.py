@@ -20,7 +20,8 @@ def build():
     if version_line not in (ROOT / 'src/moonawn_feishu/__init__.py').read_text():
         raise ValueError('Module version mismatch')
     files = {'__init__.py': ROOT / '__init__.py', 'plugin.yaml': ROOT / 'plugin.yaml',
-             'README.md': ROOT / 'README.md', 'LICENSE': ROOT / 'LICENSE',
+             'README.md': ROOT / 'README.md', 'README.en.md': ROOT / 'README.en.md',
+             'LICENSE': ROOT / 'LICENSE',
              'ACKNOWLEDGEMENTS.md': ROOT / 'ACKNOWLEDGEMENTS.md'}
     for source in sorted((ROOT / 'src/moonawn_feishu').glob('*.py')):
         files['moonawn_feishu/' + source.name] = source
@@ -28,6 +29,8 @@ def build():
                  'feishu-api-contract.md', 'THIRD_PARTY_NOTICES.md', 'source-lock.json',
                  'host-contract.json', 'feature-host-contract.json'):
         files['docs/' + name] = ROOT / 'docs' / name
+    for name in ('cover.png', 'streaming.png', 'agentloop.png', 'sessions.png', 'README.md'):
+        files['assets/' + name] = ROOT / 'assets' / name
     hashes = {name: hashlib.sha256(source.read_bytes()).hexdigest() for name, source in files.items()}
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as archive:

@@ -1,0 +1,4 @@
+# The offline demo is documentation, not the Python plugin runtime.
+preview/** linguist-documentation
+# This JavaScript file only verifies the documentation preview in Playwright.
+scripts/verify_preview.cjs linguist-detectable=false

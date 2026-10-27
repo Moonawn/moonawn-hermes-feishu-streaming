@@ -1,6 +1,7 @@
 """Check the exact Git index or a clean export; print locations, never matched secrets."""
 from pathlib import Path
 import argparse
+import hashlib
 import json
 import re
 import subprocess
@@ -12,8 +13,13 @@ DOCS = {'architecture.md', 'installation.md', 'acceptance.md', 'session-experien
 SCRIPTS = {'build_release.py', 'build_preview.py', 'verify.py', 'verify_container.py',
            'verify_host.py', 'host_smoke.py', 'verify_preview.cjs', 'fetch_references.py',
            'generate_activity_asset.py', 'check_public_tree.py'}
-ROOT_FILES = {'.gitignore', 'README.md', 'LICENSE', 'ACKNOWLEDGEMENTS.md', 'pyproject.toml',
+ROOT_FILES = {'.gitignore', '.gitattributes', 'README.md', 'README.en.md', 'LICENSE', 'ACKNOWLEDGEMENTS.md', 'pyproject.toml',
               'plugin.yaml', '__init__.py'}
+# Reviewed public artwork and synthetic UI captures; changed binaries require review.
+ASSET_SHA256 = {'assets/agentloop.png': '06d6fbbdb84fb6dc66ebd119b31acbba94f1ca877a7edd04fcdb93c40e4910d1',
+ 'assets/cover.png': '1f12b3dbf21f094add6df665e75f88a51cf71efa94d27e34177f0e38e0769d9a',
+ 'assets/sessions.png': '8ba1c8d46b84ae42873dd7d1c4ba887d5555031d6f21faf43b5bc22aa457667d',
+ 'assets/streaming.png': '641f691fa8c26bf112aa9ce9765649e2800430c37d4a48ee206a71276ec674c2'}
 PATTERNS = {
     'live_feishu_id': r'\b(?:oc|ou|om|omt|cli)_x?[a-f0-9]{16,}\b',
     'personal_home': r'/(?:Users|home)/(?!private\b|example\b|demo\b|user\b)[A-Za-z0-9_.-]+',
@@ -29,7 +35,7 @@ PATTERNS = {
 
 def allowed(name):
     p = Path(name)
-    if name in ROOT_FILES or name == '.github/workflows/ci.yml':
+    if name in ROOT_FILES or name in ASSET_SHA256 or name in {'.github/workflows/ci.yml', 'assets/README.md'}:
         return True
     return ((p.parent.as_posix() == 'src/moonawn_feishu' and p.suffix == '.py')
             or (p.parent.as_posix() == 'tests' and p.name.startswith('test_') and p.suffix == '.py')
@@ -56,6 +62,11 @@ def main():
     for name, data in files.items():
         if not allowed(name):
             failures.append({'path': name, 'rule': 'not_in_public_allowlist'})
+        if name in ASSET_SHA256:
+            if (hashlib.sha256(data).hexdigest() != ASSET_SHA256[name]
+                    or not data.startswith(b'\x89PNG\r\n\x1a\n')):
+                failures.append({'path': name, 'rule': 'unreviewed_image'})
+            continue
         try:
             text = data.decode('utf-8')
         except UnicodeDecodeError:

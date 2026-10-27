@@ -1,7 +1,9 @@
 # Public source allowlist. Local acceptance data and credentials stay untracked.
 /*
 !/.gitignore
+!/.gitattributes
 !/README.md
+!/README.en.md
 !/LICENSE
 !/ACKNOWLEDGEMENTS.md
 !/pyproject.toml
@@ -10,6 +12,7 @@
 !/src/
 !/tests/
 !/preview/
+!/assets/
 !/scripts/
 !/docs/
 !/.github/

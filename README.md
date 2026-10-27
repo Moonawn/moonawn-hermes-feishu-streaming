@@ -1,23 +1,63 @@
+<div align="center">
+
 # Hermes 飞书流式交互
 
-基于 Python 的 Hermes 飞书流式交互插件，支持流式卡片、多会话与并行任务、Agentloop 展示及 Token／耗时统计。
+### 看见进展，也看清答案。
 
-**仓库：** `moonawn-hermes-feishu-streaming` · **版本：** `0.3.0rc8`（预发布）· **许可证：** [MIT](LICENSE)
+**简体中文** · [English](README.en.md)
 
-面向已有 Hermes 飞书机器人的流式体验扩展。复用 Hermes 原生会话、入站权限、认证、媒体与审批能力；Python 内核负责卡片呈现、投递确认与恢复。运行时无需 Node.js，也不加载其他流式插件的引擎。
+[效果预览](#效果预览) · [快速开始](#快速开始) · [安装接入](docs/installation.md) · [使用指南](docs/session-experience.md)
 
-## 能力
+[![CI](https://github.com/Moonawn/moonawn-hermes-feishu-streaming/actions/workflows/ci.yml/badge.svg)](https://github.com/Moonawn/moonawn-hermes-feishu-streaming/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-- **流式答复**：累计正文合并刷新、客户端打字机效果、完整终稿回读与封口；停止或失败后保留已有内容。
-- **会话与任务**：`/sessions` 卡片切换历史会话、新建会话、另开独立话题；复用 Hermes 并发限制与显式 `/queue`。
-- **底部信息栏**：Agentloop、已耗时、模型、Token、平均输出速率；与正文分层，窄卡片可自然换行。
-- **分层执行详情**：展示原生工具动作及脱敏预览，按轮折叠、合并重复成功摘要、保留较早关键异常；限制节点数量。
-- **经验估时**：成功任务持续积累，至少 5 个满足当前进度的可比样本才显示范围；样本不足或差异过大时不猜倒计时。
-- **投递恢复**：独立 SQLite outbox、单 writer、未知 ACK 核对、防止重复答复、长文分段保留全文。
+</div>
 
-## 开始使用
+**让 Hermes 在飞书里逐步回答、展示进展，并行处理不同任务。**
 
-运行环境：**Python 3.11+、Unix、Hermes 0.22.1、进程内 Python plugin**。每进程一个 profile；Feishu SDK 与凭据由宿主提供。插件使用 Hermes 内部兼容接口，升级宿主后需要重新验收。
+正文保持完整，执行过程按需展开。模型、Token、耗时和输出均速集中在底部；需要另一段上下文时，可以切换会话，也可以另开独立话题。
+
+**当前为 `0.3.0rc8` 预发布版，兼容目标为 Hermes 0.22.1。**
+
+![Hermes 飞书流式交互：流式答复与独立会话](assets/cover.png)
+
+## 从一条消息开始
+
+| 你在飞书里做的事 | 插件呈现的体验 |
+| :--- | :--- |
+| 发送一个任务 | 正文逐步出现，最终答案保留在同一张卡片 |
+| 想了解运行进展 | 底部查看模型、Token、耗时和均速，展开 Agentloop 查看工具过程 |
+| 想接着之前的话题聊 | 用 `/sessions` 选择历史会话，恢复对应上下文 |
+| 还有另一项任务 | 另开独立话题并行处理；同一话题可用 `/queue` 依次执行 |
+
+## 效果预览
+
+正文与底部信息分层，过程默认收起，需要时再展开。
+
+![流式答复与底部运行信息](assets/streaming.png)
+
+<details>
+<summary><strong>展开 Agentloop，查看调用过程与用量明细</strong></summary>
+
+![Agentloop 展开后的分层明细](assets/agentloop.png)
+
+按轮呈现模型阶段与工具调用，保留关键异常，合并重复的成功摘要。限制历史节点数量，避免长任务展开后堆满页面。
+
+</details>
+
+<details>
+<summary><strong>切换会话，另开话题并行处理</strong></summary>
+
+![会话列表与两个独立话题](assets/sessions.png)
+
+会话使用 Hermes 原生上下文与权限。执行中的会话不能从面板原地切换，另开话题可继续处理其他任务。
+
+</details>
+
+以上界面图来自同一渲染器的离线演示，使用合成数据；实际字体、主题与组件外观由飞书客户端决定。
+
+## 快速开始
+
+需要 **Python 3.11+、Unix、Hermes 0.22.1**。运行时为 Python，复用宿主的原生 Feishu SDK、认证与权限。
 
 ```sh
 git clone https://github.com/Moonawn/moonawn-hermes-feishu-streaming.git
@@ -26,32 +66,43 @@ python3 scripts/verify.py
 python3 scripts/build_release.py
 ```
 
-默认验证仅运行离线测试和合成性能检查，不需要机器人或凭据。构建生成 `dist/moonawn-feishu-0.3.0rc8.zip` 和 SHA-256 清单，**不会自动安装或启动网关**。安装目录结构、独立测试与回退见 [安装说明](docs/installation.md)。
+产物为 `dist/moonawn-feishu-0.3.0rc8.zip`，附 SHA-256 清单。上面两步验证源码并构建插件包，不会自动接入机器人。
+
+首次使用请按 [安装与回退说明](docs/installation.md) 接入独立测试实例。每进程一个 profile，使用进程内 Python plugin；避免多个流式插件同时接管 Feishu 答复。
+
+## 把过程留在答案旁边
+
+底部常驻 **Agentloop · 已耗时 · 模型 · Token · 输出均速**。详情中查看 API 次数、输入与输出用量、缓存及工具状态。统计来自原生回调和已回报的 usage，不按字数推算。
+
+预计剩余时间随成功任务逐步积累：至少有 5 个满足当前进度的可比样本才显示范围；样本不足时显示积累进度。输出均速包含思考与工具等待，不代表模型的纯解码速度。
+
+[交互与统计口径 →](docs/session-experience.md)
+
+<details>
+<summary><strong>开发验证与本地预览</strong></summary>
+
+165 项离线测试及 Python 3.11–3.13 CI 已通过。固定 Hermes 宿主另有插件加载、卸载和 SDK smoke 检查。
 
 ```sh
-# 生成可交互的本地模拟页面；先完成上面的 verify.py
+python3 scripts/verify.py
 python3 scripts/build_preview.py
-# 使用浏览器打开 artifacts/preview.html
+# 用浏览器打开 artifacts/preview.html
 ```
 
-预览来自合成事件，不包含真实聊天。Playwright 布局检查为可选开发步骤，需要额外安装 Playwright / Chromium 后运行 `node scripts/verify_preview.cjs`。
+HTML 仅用于离线交互预览，Playwright 脚本用于布局检查，均不参与 Python 插件运行。可选宿主与浏览器验证步骤见 [安装说明](docs/installation.md)。
 
-## 验证范围
+</details>
 
-发布前在不含本机缓存、配置与账号数据的源码副本中验证离线测试及构建。此前隔离测试机器人已验证会话切换、双话题并行、停止隔离、显式排队、统计、话题附件下载与 Chrome Web 卡片交互。详细口径见 [验收与限制](docs/acceptance.md)。
+## 当前范围
 
-当前为预发布版本。尚未完成移动端、长期压力、多 profile 共进程、分布式部署和真实审批完整链路验证；异常恢复的部分场景只有离线测试。公开发布不代表生产已切换。
+已在隔离测试环境验证会话切换、双话题并行、停止隔离、显式排队、统计、附件下载及 Chrome Web 交互。移动端、长期压力、多 profile 共进程与真实审批完整链路尚未完成验收。
 
-## 参考与致谢
+[验收与限制](docs/acceptance.md) · [实现架构](docs/architecture.md)
 
-本项目由 Moonawn 独立维护。设计参考 [Lark 官方 OpenClaw 插件](https://github.com/larksuite/openclaw-lark) 的卡片生命周期与刷新组织方式，并吸收此前 [Moonawn/hermes-lark-streaming](https://github.com/Moonawn/hermes-lark-streaming) fork 的实测与修复经验；该 fork 的原项目为 [Aowen-Nowor/hermes-lark-streaming](https://github.com/Aowen-Nowor/hermes-lark-streaming)。
+---
 
-也参考了 HFC 等实现。项目不是 Lark、OpenClaw 或 Nous Research 的官方产品，也不表示获得其背书。具体参考范围、固定修订与真实代码复用说明见 [参考与来源](ACKNOWLEDGEMENTS.md)；Hermes 原生方法测试样本保留 [第三方 MIT 声明](docs/THIRD_PARTY_NOTICES.md)。
+参考 [OpenClaw 飞书官方插件](https://github.com/larksuite/openclaw-lark) 的卡片设计，以及此前 [HLS fork](https://github.com/Moonawn/hermes-lark-streaming)（[原项目](https://github.com/Aowen-Nowor/hermes-lark-streaming)）的维护经验。[来源说明](ACKNOWLEDGEMENTS.md) · [第三方许可](docs/THIRD_PARTY_NOTICES.md)
 
-## 文档
+[使用指南](docs/session-experience.md) · [问题反馈](https://github.com/Moonawn/moonawn-hermes-feishu-streaming/issues) · [MIT License](LICENSE) · [English](README.en.md)
 
-- [使用与统计口径](docs/session-experience.md)
-- [架构与恢复机制](docs/architecture.md)
-- [Feishu API 契约](docs/feishu-api-contract.md)
-- [安装与回退](docs/installation.md)
-- [验收与限制](docs/acceptance.md)
+Copyright (c) 2026 Moonawn.
