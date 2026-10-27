@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moonawn-hermes-feishu-streaming"
+version = "0.3.0rc8"
+description = "Python-native Feishu streaming interaction plugin for Hermes, with sessions, parallel tasks, Agentloop and usage metrics"
+requires-python = ">=3.11"
+dependencies = []
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [{name = "Moonawn"}]
+
+[project.urls]
+Repository = "https://github.com/Moonawn/moonawn-hermes-feishu-streaming"
+Issues = "https://github.com/Moonawn/moonawn-hermes-feishu-streaming/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]

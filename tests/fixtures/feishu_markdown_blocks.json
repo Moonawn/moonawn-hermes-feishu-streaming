@@ -1,0 +1,5 @@
+{
+  "expected": "投影检查\n\n# 一级\n\n## 二级\n\n正文\n\n---\n\n下一段\n\n```python\nx = 1\n\n  # 原有空行与缩进\n  y = 2\n```\n\n结束",
+  "observed": "投影检查\n# 一级\n\n## 二级\n正文\n<hr>\n下一段```python\nx = 1\n\n\n\n  # 原有空行与缩进\n\n  y = 2\n\n```\n\n结束",
+  "source": "real Feishu dedicated test 2026-10-23"
+}

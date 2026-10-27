@@ -1,0 +1,90 @@
+{
+  "image": "sha256:861c9756ed6c558530c73d5c27860343b00c0d5efd6997a1d8ec6416c8a2b485",
+  "source_only": true,
+  "files": [
+    {
+      "path": "gateway/slash_commands_session.py",
+      "sha256": "b4f078e993b897af2e9cf32ea09d0e3431dd5c4069f2552256ca29fc2136f8e1"
+    },
+    {
+      "path": "gateway/slash_commands_branch_thread.py",
+      "sha256": "df3925c9ed78db0794c974a9a4c164c7f6a611b2391f986b12d374af6911f735"
+    },
+    {
+      "path": "gateway/session_listing.py",
+      "sha256": "dd523e0ca2f9aa58f4ce1baaf98c59b31ac9254572ab52193e4b07bbb054fd26"
+    },
+    {
+      "path": "gateway/session_usage.py",
+      "sha256": "94bff86bef7f736c2fa0b80e16b4f8885a162e429a6b039938c724a7da172789"
+    },
+    {
+      "path": "gateway/session_commands.py",
+      "sha256": "3c0147f5b85d2c7f6602a17fb6a57e2e1d7bc1230d94f8b175dc22d54dfdfa66"
+    },
+    {
+      "path": "gateway/stream_events.py",
+      "sha256": "967db18281cc9c18977269ef47990c54ad4eefc633e976841ac25df1447605e2"
+    },
+    {
+      "path": "gateway/run_turn_runner.py",
+      "sha256": "b0b5ea1f583a350695108c47f3f8a2c7201700d8a2dde1e56e0a73858979802c"
+    },
+    {
+      "path": "gateway/turn_context.py",
+      "sha256": "0ead1dd84316f79eb3809d60941577b7cf0c82f120e9c9a49fe946f59f6a6f10"
+    },
+    {
+      "path": "agent/turn_usage.py",
+      "sha256": "eead64e0b584521ab118094af5ebee7d886f30c2c4ff6984e6a2b8e1a4b276f3"
+    },
+    {
+      "path": "agent/turn_finalizer.py",
+      "sha256": "9000e17a4a0dba03b1d97cc10fe4184addcca685520ca0c9e6c6ef2cb97d1f25"
+    },
+    {
+      "path": "agent/turn_api_call.py",
+      "sha256": "2897575995d8dcbe94bba666ef66043a64c52a6c99e72c45e7da64a5fbdf576b"
+    },
+    {
+      "path": "agent/turn_iteration_prep.py",
+      "sha256": "73ceb91f917a682665845360557a8a45c0623e257ff9fee4995ae786ce2a441a"
+    },
+    {
+      "path": "agent/session_activity.py",
+      "sha256": "9ae66b3e98c45406e550a938d76414f74ada03514235143aa672a23f5f4d6b86"
+    },
+    {
+      "path": "gateway/session.py",
+      "sha256": "632d8e541b07262b8af3006905d1719fdce1cd011b5573043a14380a9ceb0933"
+    },
+    {
+      "path": "gateway/session_identity.py",
+      "sha256": "8d16050ecac33dfd8a482b5f35af02daf22d1130f6cf534f1157b1e22157351d"
+    },
+    {
+      "path": "gateway/platforms/event.py",
+      "sha256": "cfa64900cc6161afd69fae124228c49bfb835c2318e57a05ddca926f91ab980a"
+    },
+    {
+      "path": "gateway/run_turn_progress.py",
+      "sha256": "eb07a5275e60456d473e3eb5a7df87546298110afb5d6a416fe5c33388eca04b"
+    },
+    {
+      "path": "agent/turn_tool_round.py",
+      "sha256": "1ccd3574528597f5c3a5589729849f8a10e422f0d970af3bb03b1fbd277f1f29"
+    },
+    {
+      "path": "gateway/run_startup.py",
+      "sha256": "c4a7b2e2ee51af0e67c2e9c9923b9c9e595d72e914b94173c236c27a49ac9458"
+    },
+    {
+      "path": "gateway/run_busy.py",
+      "sha256": "5bd1fcf4a6f1a397fcd103f9d747289a3498fab08f6987c71fb0eaa7eda4bd1b"
+    },
+    {
+      "path": "gateway/run_inbound.py",
+      "sha256": "128542421478a3db945030f2e677d51146bd3bfd5a951e6c9d228f0fac175a6a"
+    }
+  ]
+}

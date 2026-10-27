@@ -1,0 +1,5 @@
+{
+  "source": "real Feishu CardKit user_card_content readback, 2026-10-23; only synthetic test text retained",
+  "expected": "**飞书实网验收 · 流式正文**\n\n这是一段固定验收文本，用于观察真实卡片逐步显示。\n\n中文与 emoji：你好，Hermes 🌙。\n\n```python\nprint('stream verified')\n```\n\n| 检查 | 目标 |\n|---|---|\n| 正文 | 完整保留 |\n| 末尾 | 不截断 |\n\n此项只验证投递与显示；真实模型 Token、Agent loop 另行验收。\n\n验收尾标：live-stream-001",
+  "observed": "**飞书实网验收 · 流式正文**\n\n这是一段固定验收文本，用于观察真实卡片逐步显示。\n\n中文与 emoji：你好，Hermes 🌙。```python\nprint('stream verified')\n\n```\n\n| 检查 | 目标 |\n| -------- | -------- |\n| 正文 | 完整保留 |\n| 末尾 | 不截断 |\n此项只验证投递与显示；真实模型 Token、Agent loop 另行验收。\n\n验收尾标：live-stream-001"
+}

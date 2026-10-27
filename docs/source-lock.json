@@ -1,0 +1,275 @@
+{
+  "reviewed_on": "2026-10-15",
+  "files": [
+    {
+      "repo": "larksuite/openclaw-lark",
+      "revision": "dde0be3680d6fd5443cab426c8f4b3216266346a",
+      "path": "src/card/streaming-card-controller.ts",
+      "url": "https://raw.githubusercontent.com/larksuite/openclaw-lark/dde0be3680d6fd5443cab426c8f4b3216266346a/src/card/streaming-card-controller.ts",
+      "sha256": "9a902705752f25dca6d904f836597b56e2cc56e360b62f03e85095bc0fed6353",
+      "bytes": 44429
+    },
+    {
+      "repo": "larksuite/openclaw-lark",
+      "revision": "dde0be3680d6fd5443cab426c8f4b3216266346a",
+      "path": "src/card/flush-controller.ts",
+      "url": "https://raw.githubusercontent.com/larksuite/openclaw-lark/dde0be3680d6fd5443cab426c8f4b3216266346a/src/card/flush-controller.ts",
+      "sha256": "c5d8e946951a41120424deca6964293d9dae815ab880a23098d21852d3707984",
+      "bytes": 4748
+    },
+    {
+      "repo": "larksuite/openclaw-lark",
+      "revision": "dde0be3680d6fd5443cab426c8f4b3216266346a",
+      "path": "src/card/reply-dispatcher.ts",
+      "url": "https://raw.githubusercontent.com/larksuite/openclaw-lark/dde0be3680d6fd5443cab426c8f4b3216266346a/src/card/reply-dispatcher.ts",
+      "sha256": "61b2624fb275c5978c772f9c44749188232473382d9d01d8a25bc6263cfef1b6",
+      "bytes": 15826
+    },
+    {
+      "repo": "larksuite/openclaw-lark",
+      "revision": "dde0be3680d6fd5443cab426c8f4b3216266346a",
+      "path": "src/card/cardkit.ts",
+      "url": "https://raw.githubusercontent.com/larksuite/openclaw-lark/dde0be3680d6fd5443cab426c8f4b3216266346a/src/card/cardkit.ts",
+      "sha256": "6419bd139b25d3a4d6b650e9b2ca41c6e3fb2509aa6d6d97a2c548d3cf716090",
+      "bytes": 8725
+    },
+    {
+      "repo": "larksuite/openclaw-lark",
+      "revision": "dde0be3680d6fd5443cab426c8f4b3216266346a",
+      "path": "src/card/builder.ts",
+      "url": "https://raw.githubusercontent.com/larksuite/openclaw-lark/dde0be3680d6fd5443cab426c8f4b3216266346a/src/card/builder.ts",
+      "sha256": "d2853c621d6e25eb10548b964782775fe25da8f66b5bc80c3b6c0d21abf8d348",
+      "bytes": 28840
+    },
+    {
+      "repo": "larksuite/openclaw-lark",
+      "revision": "dde0be3680d6fd5443cab426c8f4b3216266346a",
+      "path": "src/card/unavailable-guard.ts",
+      "url": "https://raw.githubusercontent.com/larksuite/openclaw-lark/dde0be3680d6fd5443cab426c8f4b3216266346a/src/card/unavailable-guard.ts",
+      "sha256": "653fbc57140a107c45f41eb97c9ac472a8247342f713256fa635a59615ff1983",
+      "bytes": 3567
+    },
+    {
+      "repo": "larksuite/openclaw-lark",
+      "revision": "dde0be3680d6fd5443cab426c8f4b3216266346a",
+      "path": "src/messaging/converters/interactive/card-converter.ts",
+      "url": "https://raw.githubusercontent.com/larksuite/openclaw-lark/dde0be3680d6fd5443cab426c8f4b3216266346a/src/messaging/converters/interactive/card-converter.ts",
+      "sha256": "c219d07f893df0a6ae8ab1fe8a5ed5c8ea8138881f8ad47f8496db959d0b0c97",
+      "bytes": 39231
+    },
+    {
+      "repo": "larksuite/openclaw-lark",
+      "revision": "dde0be3680d6fd5443cab426c8f4b3216266346a",
+      "path": "package.json",
+      "url": "https://raw.githubusercontent.com/larksuite/openclaw-lark/dde0be3680d6fd5443cab426c8f4b3216266346a/package.json",
+      "sha256": "82e4055a9d4012538f49547913a63880e06ce09cfccb1415fce52ecc47d4676c",
+      "bytes": 2423
+    },
+    {
+      "repo": "larksuite/openclaw-lark",
+      "revision": "dde0be3680d6fd5443cab426c8f4b3216266346a",
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/larksuite/openclaw-lark/dde0be3680d6fd5443cab426c8f4b3216266346a/LICENSE",
+      "sha256": "c969fc7e3af68e6bf40b0d8dd9c3dcc377eb685a2139535b203b39fdcad739ee",
+      "bytes": 1084
+    },
+    {
+      "repo": "baileyh8/hermes-feishu-streaming-card",
+      "revision": "e03c57369503b3364313bf005d7f0e5087650557",
+      "path": "docs/architecture.md",
+      "url": "https://raw.githubusercontent.com/baileyh8/hermes-feishu-streaming-card/e03c57369503b3364313bf005d7f0e5087650557/docs/architecture.md",
+      "sha256": "291fe4be9f79862a058d5a6741df8c7d7b10503a594652306bc64a001778a631",
+      "bytes": 8574
+    },
+    {
+      "repo": "baileyh8/hermes-feishu-streaming-card",
+      "revision": "e03c57369503b3364313bf005d7f0e5087650557",
+      "path": "docs/event-protocol.md",
+      "url": "https://raw.githubusercontent.com/baileyh8/hermes-feishu-streaming-card/e03c57369503b3364313bf005d7f0e5087650557/docs/event-protocol.md",
+      "sha256": "61baa56c9080da1b29f008df89783cc577a9a4889fce7905f38395ab52070aea",
+      "bytes": 7484
+    },
+    {
+      "repo": "baileyh8/hermes-feishu-streaming-card",
+      "revision": "e03c57369503b3364313bf005d7f0e5087650557",
+      "path": "hermes_feishu_card/lifecycle.py",
+      "url": "https://raw.githubusercontent.com/baileyh8/hermes-feishu-streaming-card/e03c57369503b3364313bf005d7f0e5087650557/hermes_feishu_card/lifecycle.py",
+      "sha256": "5952d0f57ebee6184ab40d3fe29c8d944c9bdabbec51c1e14d78edaec1f4d6fd",
+      "bytes": 7843
+    },
+    {
+      "repo": "baileyh8/hermes-feishu-streaming-card",
+      "revision": "e03c57369503b3364313bf005d7f0e5087650557",
+      "path": "hermes_feishu_card/flush.py",
+      "url": "https://raw.githubusercontent.com/baileyh8/hermes-feishu-streaming-card/e03c57369503b3364313bf005d7f0e5087650557/hermes_feishu_card/flush.py",
+      "sha256": "f4398dedf60f68bb771b841cf573dcaa5f42fb581f33831c36993c074ff950ad",
+      "bytes": 4012
+    },
+    {
+      "repo": "baileyh8/hermes-feishu-streaming-card",
+      "revision": "e03c57369503b3364313bf005d7f0e5087650557",
+      "path": "hermes_feishu_card/delivery_policy.py",
+      "url": "https://raw.githubusercontent.com/baileyh8/hermes-feishu-streaming-card/e03c57369503b3364313bf005d7f0e5087650557/hermes_feishu_card/delivery_policy.py",
+      "sha256": "e3bdaa6a55f45e8e62f5fdf0a268045507fe5a2f5af10a2e4cbd17c3665a70ee",
+      "bytes": 7586
+    },
+    {
+      "repo": "baileyh8/hermes-feishu-streaming-card",
+      "revision": "e03c57369503b3364313bf005d7f0e5087650557",
+      "path": "hermes_feishu_card/events.py",
+      "url": "https://raw.githubusercontent.com/baileyh8/hermes-feishu-streaming-card/e03c57369503b3364313bf005d7f0e5087650557/hermes_feishu_card/events.py",
+      "sha256": "a8abad11edfe2b50abd0037b5d725cf847b98c23423bf595639ea5a0c8598384",
+      "bytes": 9180
+    },
+    {
+      "repo": "baileyh8/hermes-feishu-streaming-card",
+      "revision": "e03c57369503b3364313bf005d7f0e5087650557",
+      "path": "docs/wiki/card-visual-guidelines.md",
+      "url": "https://raw.githubusercontent.com/baileyh8/hermes-feishu-streaming-card/e03c57369503b3364313bf005d7f0e5087650557/docs/wiki/card-visual-guidelines.md",
+      "sha256": "37eae71cc177872a6f16a4cf9007f99f322288bd32d94d40e1d39879b1edcdfa",
+      "bytes": 14264
+    },
+    {
+      "repo": "baileyh8/hermes-feishu-streaming-card",
+      "revision": "e03c57369503b3364313bf005d7f0e5087650557",
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/baileyh8/hermes-feishu-streaming-card/e03c57369503b3364313bf005d7f0e5087650557/LICENSE",
+      "sha256": "9146ca9a7cadf5eaf97d7bec8b9f520e5fd6e0665d3fe50b2b1616d8e4746bb1",
+      "bytes": 1098
+    },
+    {
+      "repo": "wzgrx/openclaw-hermes-feishu-card",
+      "revision": "88f4089bd1e450b8c50a23b3535fac3256707bd8",
+      "path": "docs/architecture.md",
+      "url": "https://raw.githubusercontent.com/wzgrx/openclaw-hermes-feishu-card/88f4089bd1e450b8c50a23b3535fac3256707bd8/docs/architecture.md",
+      "sha256": "b207c4360171441de7bd2a48a1344f692c9b07adbcadfcdf933c90bbf63c05bd",
+      "bytes": 4589
+    },
+    {
+      "repo": "wzgrx/openclaw-hermes-feishu-card",
+      "revision": "88f4089bd1e450b8c50a23b3535fac3256707bd8",
+      "path": "openclaw_hermes_feishu_card/adapter.py",
+      "url": "https://raw.githubusercontent.com/wzgrx/openclaw-hermes-feishu-card/88f4089bd1e450b8c50a23b3535fac3256707bd8/openclaw_hermes_feishu_card/adapter.py",
+      "sha256": "a3d58fa0882232a1a4018bae66d1a2801be363c0584eb03685c2eddd51185757",
+      "bytes": 18258
+    },
+    {
+      "repo": "wzgrx/openclaw-hermes-feishu-card",
+      "revision": "88f4089bd1e450b8c50a23b3535fac3256707bd8",
+      "path": "openclaw_hermes_feishu_card/plugin.py",
+      "url": "https://raw.githubusercontent.com/wzgrx/openclaw-hermes-feishu-card/88f4089bd1e450b8c50a23b3535fac3256707bd8/openclaw_hermes_feishu_card/plugin.py",
+      "sha256": "3989c07ee5aebc290af9f06e7b376ec0a8d4c9af1ab8b8e578f540c1d1977e43",
+      "bytes": 3103
+    },
+    {
+      "repo": "wzgrx/openclaw-hermes-feishu-card",
+      "revision": "88f4089bd1e450b8c50a23b3535fac3256707bd8",
+      "path": "openclaw_hermes_feishu_card/plugin.yaml",
+      "url": "https://raw.githubusercontent.com/wzgrx/openclaw-hermes-feishu-card/88f4089bd1e450b8c50a23b3535fac3256707bd8/openclaw_hermes_feishu_card/plugin.yaml",
+      "sha256": "4e496bb2094c269dbc4cb576136ba8a05e61e576858a31388b73975f69ffb0f9",
+      "bytes": 1008
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "revision": "v0.22.0",
+      "path": "hermes_cli/__init__.py",
+      "url": "https://raw.githubusercontent.com/NousResearch/hermes-agent/v0.22.0/hermes_cli/__init__.py",
+      "sha256": "6a4ab05b8621ec1cd66a5abbe30fa32ed5bddddea95903036da01f0af1af94ce",
+      "bytes": 3600
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "revision": "e06df9c2eae6901f4c88f464e0ae6e753c0428b8",
+      "path": "plugins/platforms/feishu/adapter.py",
+      "source": "read-only source from installed v0.22.0 image",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/e06df9c2eae6901f4c88f464e0ae6e753c0428b8/plugins/platforms/feishu/adapter.py",
+      "sha256": "355a4147cf3d2bf2bc55072f72c207531574216dd62754705023f4ea51697ad3",
+      "bytes": 225270
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "revision": "e06df9c2eae6901f4c88f464e0ae6e753c0428b8",
+      "path": "plugins/platforms/feishu/__init__.py",
+      "source": "read-only source from installed v0.22.0 image",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/e06df9c2eae6901f4c88f464e0ae6e753c0428b8/plugins/platforms/feishu/__init__.py",
+      "sha256": "1792e361eab0aea87bc38b61e2e200f55b885fcaf0ae1897d332d3bdffa722e6",
+      "bytes": 54
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "revision": "e06df9c2eae6901f4c88f464e0ae6e753c0428b8",
+      "path": "plugins/platforms/feishu/plugin.yaml",
+      "source": "read-only source from installed v0.22.0 image",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/e06df9c2eae6901f4c88f464e0ae6e753c0428b8/plugins/platforms/feishu/plugin.yaml",
+      "sha256": "8ca22e6ee0c4d5be222706b7c6ff8eea9ef6aa1bd527814add6387b98d65fbba",
+      "bytes": 1604
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "revision": "e06df9c2eae6901f4c88f464e0ae6e753c0428b8",
+      "path": "gateway/platforms/base.py",
+      "source": "read-only source from installed v0.22.0 image",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/e06df9c2eae6901f4c88f464e0ae6e753c0428b8/gateway/platforms/base.py",
+      "sha256": "96d2f0f680e796232b6d70353c475cf6a0a81b6ebf8ba36de18ad8cb91525fce",
+      "bytes": 278542
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "revision": "e06df9c2eae6901f4c88f464e0ae6e753c0428b8",
+      "path": "gateway/stream_consumer.py",
+      "source": "read-only source from installed v0.22.0 image",
+      "url": "https://github.com/NousResearch/hermes-agent/blob/e06df9c2eae6901f4c88f464e0ae6e753c0428b8/gateway/stream_consumer.py",
+      "sha256": "27b49c94f2f7a48f51ebf17d369e03f3dd8ec1ea6963fd7b194fd17147911172",
+      "bytes": 54319
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "revision": "e06df9c2eae6901f4c88f464e0ae6e753c0428b8",
+      "path": "gateway/stream_events.py",
+      "source": "read-only source from installed v0.22.0 image",
+      "sha256": "967db18281cc9c18977269ef47990c54ad4eefc633e976841ac25df1447605e2",
+      "bytes": 2693,
+      "url": "https://github.com/NousResearch/hermes-agent/blob/e06df9c2eae6901f4c88f464e0ae6e753c0428b8/gateway/stream_events.py"
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "revision": "e06df9c2eae6901f4c88f464e0ae6e753c0428b8",
+      "path": "gateway/stream_consumer_transport.py",
+      "source": "read-only source from installed v0.22.0 image",
+      "sha256": "85eec918b2fb36a3493d25d5fe90be48d5c79b840fdf3bf860db5fb52e82d1d8",
+      "bytes": 33729,
+      "url": "https://github.com/NousResearch/hermes-agent/blob/e06df9c2eae6901f4c88f464e0ae6e753c0428b8/gateway/stream_consumer_transport.py"
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "revision": "e06df9c2eae6901f4c88f464e0ae6e753c0428b8",
+      "path": "hermes_cli/plugins.py",
+      "source": "read-only source from installed v0.22.0 image",
+      "sha256": "f5a1c27a22025984bbf956b58154ce23914592307bd945d7a1c0167cc443d771",
+      "bytes": 129067,
+      "url": "https://github.com/NousResearch/hermes-agent/blob/e06df9c2eae6901f4c88f464e0ae6e753c0428b8/hermes_cli/plugins.py"
+    }
+  ],
+  "fetch_notes": [
+    {
+      "repo": "NousResearch/hermes-agent",
+      "path": "gateway/platforms/feishu.py",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "path": "gateway/platforms/base.py",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "path": "gateway/platforms/__init__.py",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "repo": "NousResearch/hermes-agent",
+      "path": "hermes_cli/plugins.py",
+      "error": "HTTP Error 429: Too Many Requests"
+    }
+  ]
+}

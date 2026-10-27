@@ -1,0 +1,26 @@
+{
+  "image": "sha256:861c9756ed6c558530c73d5c27860343b00c0d5efd6997a1d8ec6416c8a2b485",
+  "scope": "source-only snapshot; no config/database/credentials",
+  "files": [
+    {
+      "path": "gateway/run_notifications.py",
+      "sha256": "a6d6790cea3dae1fba2c352d03edd30a6fb04bd2891a3da4a331dff83b06e2c1"
+    },
+    {
+      "path": "gateway/run_turn.py",
+      "sha256": "3855ac88e923d798b6c6e10dc1e59959a2102fcf4c1bf29625ea452f0abacc72"
+    },
+    {
+      "path": "gateway/stream_consumer.py",
+      "sha256": "467c6388257d1b312233ed64604b38410e9634c8e08e996b517e402d1b7953d6"
+    },
+    {
+      "path": "plugins/platforms/feishu/adapter.py",
+      "sha256": "355a4147cf3d2bf2bc55072f72c207531574216dd62754705023f4ea51697ad3"
+    },
+    {
+      "path": "gateway/platforms/base.py",
+      "sha256": "ba558db13e29bd29b7b7ecb7e39c2830972104839f9fa6798ace32c722a04525"
+    }
+  ]
+}
