@@ -1,6 +1,6 @@
 # Python 流式实现架构
 
-更新：2026-10-27，公开候选 0.3.0rc8。
+更新：2026-10-28，公开候选 0.3.0rc9。
 
 ```mermaid
 flowchart TD
@@ -21,7 +21,7 @@ flowchart TD
 
 本插件不是另一个网关。原生 adapter 负责入站、权限、连接、附件、引用消息与审批；我们的子类保留这些能力。运行时不依赖参考项目代码，Python 标准库承担状态、同步、渲染与 outbox，SDK 客户端和身份由宿主注入。
 
-Hermes 当前没有一个经过验证的公开接口同时给出全部必要的最终投递语义，投递层有四个集中兼容点：consumer 类路由、每轮 `_run_agent_inner`、转换后的 `_run_agent_mark_streamed_delivery`、排队 `_deliver_queued_first_response`。只对本插件 adapter 及上下文生效，其他平台走原实现。加载前检查签名，注册失败回滚，卸载恢复方法。会话与统计层另外包装原生 callback wiring 和 sessions/reset/resume 三个命令入口，另有历史会话 owner 检查及 native retry/delivery ledger 的所有权适配；并为无参数 `/sessions` 增加经原生 ACL/profile scope 的忙时面板入口；当前共 16 项静态签名检查。不能将这层维护成本说成零。
+Hermes 当前没有一个经过验证的公开接口同时给出全部必要的最终投递语义，投递层有四个集中兼容点：consumer 类路由、每轮 `_run_agent_inner`、转换后的 `_run_agent_mark_streamed_delivery`、排队 `_deliver_queued_first_response`。只对本插件 adapter 及上下文生效，其他平台走原实现。加载前检查签名，注册失败回滚，卸载恢复方法。会话与统计层另外包装原生 callback wiring 和 sessions/reset/resume 三个命令入口，另有历史会话 owner 检查及 native retry/delivery ledger 的所有权适配；并为无参数 `/sessions` 增加经原生 ACL/profile scope 的忙时面板入口；当前共 19 项静态签名检查。不能将这层维护成本说成零。
 
 ## 身份和终态
 
@@ -64,6 +64,10 @@ Runtime worker 恢复终态未确认/未封口的 phase，等待 2–30 秒，12
 本版本要求每进程单 profile；不支持共享库的多进程/多副本，不支持 plugin host 子进程隔离下跨进程 hook。需在生产切换前验收真实回读、媒体、审批与客户端。
 
 ## 呈现
+
+`/stop` 跳过原生群级串行锁，直接进入同一个原生 `handle_message`，防止其他话题的慢速命令回包阻塞停止。身份、ACL、会话 key 与停止语义仍由宿主管理；其他消息继续走原生锁。原生锁持有慢请求时的回归及固定宿主 smoke 均验证此路径。历史约 65 秒延迟发生在入站至宿主停止之间；此修复消除一个可复现的阻塞来源，不等于已证明它是历史事件的唯一根因。
+
+诊断记录停止分发总耗时、consumer 观察停止到卡片处理的耗时、终稿投递耗时；独立采样器检测事件循环调度延迟。这些数据用于定位等待，不作为模型解码速度或完成时间承诺。
 
 正文 normal_v2、轻量 notation 状态、工具默认折叠、独立补充、失败/停止明确保留内容。工具区显示经脱敏与限长的原生动作和参数预览，不输出原始 args/result、内部路径或凭据；未完成的工具状态不伪造成功。卡片使用原生组件，HTML 预览验证层次与响应式，不能作为真实 Feishu 渲染的证明。
 

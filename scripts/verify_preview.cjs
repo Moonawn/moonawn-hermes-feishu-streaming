@@ -149,7 +149,13 @@ let browser;
   await page.locator(".process > summary").click();
   await page.locator(".loop-detail > summary").filter({ hasText: "核对参考资料" }).click();
   const detail = await page.locator(".process > .steps").innerText();
-  assert.ok(detail.includes("核对参考资料") && detail.includes("已完成"));
+  assert.ok(detail.includes("核对参考资料") && detail.includes("✓ 完成"));
+  assert.ok(!detail.includes("0.0s") && !detail.includes("· 已完成"));
+  const markers = await page.locator('.process summary').evaluateAll(nodes => nodes.map(el => ({
+    before: getComputedStyle(el, '::before').content,
+    after: getComputedStyle(el, '::after').content
+  })));
+  assert.ok(markers.every(m => ['none', 'normal', '""'].includes(m.before) && m.after !== 'none'));
   await page.locator(".loop-detail > summary").filter({ hasText: "用量与耗时依据" }).click();
   const facts = await page.locator(".process > .steps").innerText();
   assert.ok(facts.includes("Token 输入") && facts.includes("耗时参考已积累"));

@@ -5,6 +5,7 @@ import json
 from html import escape
 from copy import deepcopy
 import re
+import math
 from .model import Phase, digest
 from .telemetry import TIMELINE_LIMIT, metric_lines, metric_details, remaining_time_detail
 
@@ -51,6 +52,13 @@ def disclosure(title, elements, *, element_id):
             "padding": "0px", "vertical_spacing": "4px", "elements": elements}
 
 
+def short_elapsed(value):
+    """Missing timing is not zero; measured sub-tenth intervals stay readable."""
+    if not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
+        return '耗时未记录'
+    return '<0.1s' if value < .1 else f'{value:.1f}s'
+
+
 def tool_rows(tools, terminal):
     """Collapse only identical successful facts, never failures or active work."""
     groups = []
@@ -66,9 +74,9 @@ def tool_rows(tools, terminal):
         tool = calls[0]
         state = tool["state"]
         label = literal(safe_tool_label(tool["label"]))
-        status = {"done": "✓ 完成", "failed": "调用未完成", "running": "状态未回传" if terminal else "执行中"}[state]
+        status = {"done": "✓ 完成", "failed": "调用失败", "running": "状态未回传" if terminal else "执行中"}[state]
         elapsed = sum(t.get("elapsed", 0) for t in calls)
-        timing = (f" · {'累计 ' if len(calls) > 1 else ''}{elapsed:.1f}s" if any("elapsed" in t for t in calls) else "")
+        timing = (f" · {'累计 ' if len(calls) > 1 else ''}{literal(short_elapsed(elapsed))}" if any("elapsed" in t for t in calls) else "")
         count = f" ×{len(calls)}" if len(calls) > 1 else ""
         action = literal(tool.get("action", ""))
         preview = literal(tool.get("preview", ""))
@@ -79,7 +87,7 @@ def tool_rows(tools, terminal):
         # The native action and preview form one compact detail line; failure
         # suffix stays explicit instead of being hidden by parameter text.
         detail = " · ".join(x for x in (action, preview) if x)
-        if outcome:
+        if outcome and tool.get('outcome', '').strip().casefold() not in {'完成', '已完成', '成功', 'done', 'completed', 'success'}:
             lead += " · " + outcome
         rows.append(md(lead + (f"\n<font color='grey'>{detail}</font>" if detail else "")))
     return rows
@@ -107,7 +115,7 @@ def activity_rows(phase, metrics):
     failed = sum(t["state"] == "failed" for t in phase.tools.values())
     active = sum(t["state"] == "running" for t in phase.tools.values())
     if failed:
-        rows.append(md(f"<font color='red'>留存明细中有 {failed} 项调用未完成</font> · 具体原因见对应轮次"))
+        rows.append(md(f"<font color='red'>{failed} 次工具调用失败</font> · 展开对应轮次查看原因"))
     elif active and not phase.terminal:
         rows.append(md(f"正在执行 {active} 项工具调用"))
     remaining = remaining_time_detail(metrics)
@@ -117,7 +125,7 @@ def activity_rows(phase, metrics):
         tools = groups.get(iteration, [])
         step = observations.get(iteration)
         number = f"{iteration:02d}" if iteration else "—"
-        model = f"思考／生成 {step['model_elapsed']:.1f}s" if step else "模型阶段未记录"
+        model = f"思考／生成 {literal(short_elapsed(step.get('model_elapsed')))}" if step else "模型阶段未记录"
         total = max(len(tools), step.get("tools_started", 0) if step else 0)
         details = tool_rows(tools, phase.terminal)
         shown += len(tools)
@@ -126,11 +134,11 @@ def activity_rows(phase, metrics):
             state = {"done": "✓", "failed": "!", "running": "未回传" if phase.terminal else "执行中"}[tool["state"]]
             end = literal(safe_tool_label(tool["label"])) + " " + state
             if "elapsed" in tool:
-                end += f" {tool['elapsed']:.1f}s"
+                end += ' ' + literal(short_elapsed(tool['elapsed']))
         elif total:
             done = step.get("tools_done", 0) if step else sum(t["state"] != "running" for t in tools)
             failed = sum(t["state"] == "failed" for t in tools)
-            end = f"工具 {done}/{total}" + (f" · {failed} 项未完成" if failed else "")
+            end = f"工具 {done}/{total}" + (f" · {failed} 次失败" if failed else "")
         else:
             end = ({"final": "答复完成", "cancel": "已停止", "error": "执行未完成"}.get(phase.terminal)
                    if iteration == current else None) or ("等待选择" if phase.status == "waiting" else "生成中" if step and step.get("model_active") else "本轮结束" if step and step.get("ended") else "阶段待回报")

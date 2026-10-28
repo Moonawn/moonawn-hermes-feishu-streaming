@@ -1,11 +1,17 @@
-# Hermes 飞书流式交互 · 0.3.0rc8
+# Hermes 飞书流式交互 · 0.3.0rc9
 
-基于 Python 的 Hermes 飞书流式交互插件，支持流式卡片、多会话与并行任务、Agentloop 展示及 Token／耗时统计。
+这次预发布改善停止入口、安装可检查性与 Agentloop 明细。兼容目标为 **Hermes 0.22.1、Python 3.11+、Unix、每进程一个 profile**；先接入独立测试实例。
 
-源码与问题反馈：https://github.com/Moonawn/moonawn-hermes-feishu-streaming
+- `/stop` 不再等待同群慢命令释放 chat lock，仍由 Hermes 原生权限和会话逻辑处理。
+- 新增只读 `doctor`：检查宿主版本、19 项静态契约、SDK、已安装插件和近期实际 factory／consumer 状态。
+- 新增有界运行诊断，区分命令处理、取消收尾、终稿提交耗时与事件循环调度延迟。
+- Agentloop 去掉重复完成状态，区分极短耗时与未记录耗时，明确标记失败调用；继续限制最近轮次与工具明细数量。
+- 提供源码插件 ZIP、`SHA256SUMS` 和逐文件 `manifest.json`，附安装及回退说明。
 
-本包包含 `plugin.yaml`、相对导入入口、`moonawn_feishu/` 模块和公开文档。插件 ID 为 `moonawn-feishu`。运行时需要 Hermes 0.22.1 原生 Feishu 依赖；Python 3.11+、Unix、单 profile / 单进程 / 进程内 plugin。
+验证包括 174 项离线测试、192 帧布局检查、固定真实 Hermes 宿主 smoke，以及专用飞书环境的双话题停止隔离和三项投递恢复。故障使用受控本地注入；不代表服务端限流、全网中断或整个网关崩溃均已验收。
 
-这是预发布候选。先阅读 [安装与回退](installation.md)、[验收与限制](acceptance.md)、[使用与统计](session-experience.md)。不要与另一个 Feishu 流式插件同时接管答复。包不含凭据、配置、状态库、真实验收日志或第三方运行时副本。
+**仍有边界：**测试宿主出现较大调度延迟，尚不承诺稳定的秒级停止；移动端、长期压力、完整审批链路和多 profile 共进程仍未验收。详情见 [验收与限制](acceptance.md)。
 
-本项目采用 [MIT](../LICENSE)。设计参考与此前 fork 关系见 [ACKNOWLEDGEMENTS](../ACKNOWLEDGEMENTS.md)，第三方来源见 [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES.md)。
+下载后先核对 `SHA256SUMS`，再按 [安装与回退](installation.md) 操作。ZIP 只含插件、公开文档及图片，不附带凭据、配置或运行数据库。
+
+[源码与问题反馈](https://github.com/Moonawn/moonawn-hermes-feishu-streaming) · [使用指南](session-experience.md) · [MIT](../LICENSE)

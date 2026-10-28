@@ -116,6 +116,34 @@ async def check():
         import importlib
         package = loaded.module.__package__ + ".moonawn_feishu."
         plugin = importlib.import_module(package + "plugin")
+        doctor = importlib.import_module(package + 'doctor')
+        diagnosis = doctor.diagnose(Path('/opt/hermes'))
+        assert diagnosis['passed'], diagnosis
+        assert len(doctor.inspect_hermes(Path('/opt/hermes'))['checks']) == 19
+        # Actual native per-chat guard: an unrelated slow command cannot hold
+        # /stop behind its reply. Admission remains the native handle_message.
+        stop_adapter = object.__new__(entry.adapter_factory)
+        lock, entered, release, stopped = asyncio.Lock(), asyncio.Event(), asyncio.Event(), asyncio.Event()
+        stop_adapter._get_chat_lock = lambda chat: lock
+        async def native_admission(event):
+            if event.get_command() == 'stop':
+                stopped.set()
+            else:
+                entered.set()
+                await release.wait()
+        stop_adapter.handle_message = native_admission
+        source_stub = SimpleNamespace(chat_id='synthetic-chat')
+        slow_command = SimpleNamespace(source=source_stub, get_command=lambda: 'sessions')
+        stop_command = SimpleNamespace(source=source_stub, get_command=lambda: 'stop')
+        blocked = asyncio.create_task(stop_adapter._handle_message_with_guards(slow_command))
+        await entered.wait()
+        stopping = asyncio.create_task(stop_adapter._handle_message_with_guards(stop_command))
+        try:
+            await asyncio.wait_for(stopped.wait(), .5)
+            assert not blocked.done()
+        finally:
+            release.set()
+            await asyncio.gather(blocked, stopping)
         runtime_mod = importlib.import_module(package + "runtime")
         engine_mod = importlib.import_module(package + "engine")
         fake_mod = importlib.import_module(package + "fake_lark")
@@ -210,6 +238,7 @@ async def check():
                            "native command table resolves session wrapper; real SDK callback owner validation",
                            "actual native busy slash admission preserves ACL before scoped panel dispatch",
                            "actual native Feishu thread session keys are distinct", "all delivery and feature hooks restored on unload"],
+                "doctor": diagnosis, "stop_admission_with_native_guard": True,
                 "network": "none", "gateway_started": False, "live_integration_verified": False}
 
 

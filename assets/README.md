@@ -2,6 +2,7 @@
 
 - `cover.png`：通过内置 `image_gen` 生成的概念封面，延续 Moonawn 仓库的暖色材质与大字排版；不是产品界面截图。
 - `streaming.png`、`agentloop.png`、`sessions.png`：使用项目离线预览的合成事件，经 Playwright 截取渲染区域；不含真实账号或聊天。
+- `feishu-web.png`、`feishu-web-demo.gif`：2026-10-28 在 Chrome 飞书 Web 中操作 `0.3.0rc9` 专用测试机器人。任务使用虚构活动数据，实际运行模型及两次工具调用；保留原始数字与文字。图片只裁取卡片正文和明细区域，排除账号、群名、引用栏及侧栏。GIF 将收起、轮次、单次调用三张截图对齐后轮播；不是连续录屏或速度基准。截图保留实际指针显示。
 
 <details>
 <summary>封面生成提示词</summary>

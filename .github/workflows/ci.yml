@@ -21,3 +21,20 @@ jobs:
         run: |
           python scripts/build_release.py
           python scripts/build_preview.py
+  hermes-host:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare pinned host and SDK for isolated verification
+        run: |
+          docker pull nousresearch/hermes-agent:v0.22.1@sha256:861c9756ed6c558530c73d5c27860343b00c0d5efd6997a1d8ec6416c8a2b485
+          python -m pip download --only-binary=:all: --no-deps lark-oapi==1.7.5 requests-toolbelt==1.0.0 -d .reference-cache/wheels
+      - name: Verify real Hermes without network or account configuration
+        run: |
+          python scripts/build_release.py
+          python scripts/verify_container.py
+          python scripts/verify_host.py

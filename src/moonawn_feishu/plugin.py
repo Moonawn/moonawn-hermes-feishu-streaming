@@ -11,6 +11,7 @@ from contextvars import ContextVar
 from dataclasses import dataclass
 from functools import wraps
 import inspect
+import logging
 from pathlib import Path
 import sys
 import time
@@ -24,6 +25,7 @@ from .telemetry import DurationHistory, TurnTelemetry
 from .tool_display import native_preview, native_outcome, native_action, clean_tool_data
 
 _dispatch = ContextVar("moonawn_feishu_dispatch", default=None)
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -82,6 +84,9 @@ class ManagedConsumer:
         self._callback_restore = []
         self._tool_started = {}
         self.host_failed = False
+        diagnostics = getattr(adapter, '_moonawn_diagnostics', None)
+        if diagnostics:
+            diagnostics.consumers += 1
         controls = getattr(adapter, "_moonawn_controls", None)
         if controls and dispatch.source:
             self.session.phase.typing = controls.typing(dispatch.source)
@@ -235,7 +240,7 @@ class ManagedConsumer:
         self._drain_mailbox()
         if not self._run_still_current():
             self.update_metrics(terminal=True)
-            await self.session.cancel()
+            await self._cancel_observed()
             return False
         value = clean_final(self.adapter, text)
         if not value.strip() or value.strip() in {"NO_REPLY", "[SILENT]", "(empty)"}:
@@ -251,7 +256,22 @@ class ManagedConsumer:
             except Exception:
                 pass  # typing cleanup is cosmetic, not a delivery obligation
         self.update_metrics(terminal=True, success=not failed)
-        return await self.session.commit(value, failed=failed)
+        started = time.monotonic()
+        try:
+            return await self.session.commit(value, failed=failed)
+        finally:
+            diagnostics = getattr(self.adapter, '_moonawn_diagnostics', None)
+            if diagnostics:
+                diagnostics.record('final_delivery', time.monotonic() - started)
+
+    async def _cancel_observed(self):
+        started = time.monotonic()
+        try:
+            await self.session.cancel()
+        finally:
+            diagnostics = getattr(self.adapter, '_moonawn_diagnostics', None)
+            if diagnostics:
+                diagnostics.record('stop_observed', time.monotonic() - started)
 
     async def run(self):
         self._loop = asyncio.get_running_loop()
@@ -259,7 +279,7 @@ class ManagedConsumer:
             while True:
                 if not self._run_still_current():
                     self.update_metrics(terminal=True)
-                    await self.session.cancel()
+                    await self._cancel_observed()
                     return
                 done = self._drain_mailbox()
                 self.update_metrics()
@@ -279,7 +299,7 @@ class ManagedConsumer:
         except asyncio.CancelledError:
             if not self.mailbox.done or not self._run_still_current():
                 self.update_metrics(terminal=True)
-                await self.session.cancel()
+                await self._cancel_observed()
             raise
 
 
@@ -417,6 +437,26 @@ def adapter_class(native):
     class MoonawnFeishuAdapter(native):
         _moonawn = None
         _moonawn_controls = None
+        _moonawn_diagnostics = None
+
+        async def _handle_message_with_guards(self, event):
+            # The native per-chat guard can be held by a slow inline command
+            # reply in another topic. /stop must reach native admission without
+            # waiting for that unrelated I/O. All identity/ACL/session checks
+            # still run in handle_message; no direct agent interruption here.
+            if getattr(event, 'get_command', lambda: None)() != 'stop':
+                return await super()._handle_message_with_guards(event)
+            started = time.monotonic()
+            logger.info('Streaming stage=stop_dispatch_started')
+            try:
+                return await self.handle_message(event)
+            finally:
+                diagnostics = self._moonawn_diagnostics
+                elapsed = time.monotonic() - started
+                if diagnostics:
+                    diagnostics.record('stop_dispatch', elapsed)
+                else:
+                    logger.info('Streaming stage=stop_dispatch elapsed_ms=%d', elapsed * 1000)
 
         def _moonawn_scope(self, source, session_key, inbound_id, anchor):
             from hermes_constants import get_hermes_home
@@ -461,6 +501,10 @@ def adapter_class(native):
                     self._moonawn_controls = ControlService(self, store, transport)
                     self._moonawn.compact()
                     self._moonawn.start()
+                    from .diagnostics import Diagnostics, runtime_facts
+                    self._moonawn_diagnostics = Diagnostics(
+                        self._moonawn_home / 'moonawn-feishu' / 'health.json', lambda: runtime_facts(self))
+                    self._moonawn_diagnostics.start()
                 except Exception:
                     self._moonawn = None
                     if store is not None:
@@ -477,6 +521,9 @@ def adapter_class(native):
                             await self._moonawn_controls.close()
                         await self._moonawn.close()
                     finally:
+                        if self._moonawn_diagnostics:
+                            await self._moonawn_diagnostics.close()
+                            self._moonawn_diagnostics = None
                         self._moonawn.engine.store.close()
                         self._moonawn = None
                         self._moonawn_controls = None
@@ -593,6 +640,8 @@ def register(ctx):
     from gateway.run_turn import GatewayTurnMixin
     from gateway.run_notifications import GatewayNotificationsMixin
     check_signature(feishu.FeishuAdapter._process_message_background, {"event", "session_key"})
+    check_signature(feishu.FeishuAdapter._handle_message_with_guards, {"event"})
+    check_signature(feishu.FeishuAdapter.handle_message, {"event"})
     check_signature(feishu.FeishuAdapter._record_delivery_obligation,
                     {"event", "session_key", "text_content", "delivery_adapter", "is_ephemeral_response"})
     check_signature(feishu.FeishuAdapter._send_retry_is_final, {"result"})

@@ -16,7 +16,7 @@
 
 正文保持完整，执行过程按需展开。模型、Token、耗时和输出均速集中在底部；需要另一段上下文时，可以切换会话，也可以另开独立话题。
 
-**当前为 `0.3.0rc8` 预发布版，兼容目标为 Hermes 0.22.1。**
+**当前为 `0.3.0rc9` 预发布版，兼容目标为 Hermes 0.22.1。**
 
 ![Hermes 飞书流式交互：流式答复与独立会话](assets/cover.png)
 
@@ -53,11 +53,22 @@
 
 </details>
 
-以上界面图来自同一渲染器的离线演示，使用合成数据；实际字体、主题与组件外观由飞书客户端决定。
+以上浅色界面图来自同一渲染器的离线演示，使用合成数据；实际字体、主题与组件外观由飞书客户端决定。
+
+<details>
+<summary><strong>Chrome Web 实际效果：展开轮次，再查看单次调用</strong></summary>
+
+![真实飞书 Web 的 Agentloop 折叠操作](assets/feishu-web-demo.gif)
+
+专用测试机器人实际执行虚构活动数据的核对任务。动图由三张真实操作截图组成，仅展示折叠层级，不是生成速度演示；统计与耗时保持原值。测试环境出现的延迟和原生提示残留见 [验收记录](docs/acceptance.md)。[查看静态图](assets/feishu-web.png)。
+
+</details>
 
 ## 快速开始
 
-需要 **Python 3.11+、Unix、Hermes 0.22.1**。运行时为 Python，复用宿主的原生 Feishu SDK、认证与权限。
+可直接下载 [预发布安装包与 SHA-256](https://github.com/Moonawn/moonawn-hermes-feishu-streaming/releases/tag/v0.3.0rc9)，按 [安装与回退说明](docs/installation.md) 接入专用测试实例。
+
+从源码构建需要 **Python 3.11+、Unix、Hermes 0.22.1**。运行时为 Python，复用宿主的原生 Feishu SDK、认证与权限。
 
 ```sh
 git clone https://github.com/Moonawn/moonawn-hermes-feishu-streaming.git
@@ -66,7 +77,7 @@ python3 scripts/verify.py
 python3 scripts/build_release.py
 ```
 
-产物为 `dist/moonawn-feishu-0.3.0rc8.zip`，附 SHA-256 清单。上面两步验证源码并构建插件包，不会自动接入机器人。
+产物为 `dist/moonawn-feishu-0.3.0rc9.zip`，附 SHA-256 清单。上面两步验证源码并构建插件包，不会自动接入机器人。
 
 首次使用请按 [安装与回退说明](docs/installation.md) 接入独立测试实例。每进程一个 profile，使用进程内 Python plugin；避免多个流式插件同时接管 Feishu 答复。
 
@@ -81,7 +92,7 @@ python3 scripts/build_release.py
 <details>
 <summary><strong>开发验证与本地预览</strong></summary>
 
-165 项离线测试及 Python 3.11–3.13 CI 已通过。固定 Hermes 宿主另有插件加载、卸载和 SDK smoke 检查。
+174 项离线测试；CI 覆盖 Python 3.11–3.13，以及固定 Hermes 0.22.1 宿主的插件加载、卸载、原生停止路径和 SDK smoke 检查。
 
 ```sh
 python3 scripts/verify.py

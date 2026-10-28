@@ -119,15 +119,16 @@ async def scenario(name, title, subtitle):
             agent.session_completion_tokens += 420
             agent.session_api_calls += 1
             agent._last_turn_usage = {"reported": True}
-            meter.step(2)
-            meter.tool("read")
+            meter.tool("read", name='read_file')
             now[0] = 21
-            await emit("tool", "核对参考资料", tool_id="read", tool_state="running", data={"iteration": 2, "preview": "比较资料中的关键结论"})
+            await emit("tool", "核对参考资料", tool_id="read", tool_state="running", data={"iteration": 1, "preview": "比较资料中的关键结论"})
             await emit("metrics", data=meter.snapshot(), caption="模拟历史样本给出剩余区间；不把轮次上限当作完成度。")
             await emit("snapshot", "我正在核对资料中的关键结论。\n\n已经找到一致的部分，接下来整理分歧与建议。", "打字机只负责呈现新增长的正文。")
-            now[0] = 36
+            now[0] = 30
             meter.tool("read", done=True)
-            await emit("tool", "核对参考资料", tool_id="read", tool_state="done", data={"iteration": 2, "elapsed": 28, "outcome": "已完成"})
+            await emit("tool", "核对参考资料", tool_id="read", tool_state="done", data={"iteration": 1, "elapsed": 22, "outcome": "已完成"})
+            meter.step(2)
+            now[0] = 36
             agent.session_prompt_tokens += 4400
             agent.session_completion_tokens += 680
             agent.session_api_calls += 1

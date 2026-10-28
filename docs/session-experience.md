@@ -1,6 +1,6 @@
-# 会话与运行体验 · 0.3.0rc8
+# 会话与运行体验 · 0.3.0rc9
 
-公开候选以隔离 QA12 验收为基线。已验证范围与未完成项见 [验收与限制](acceptance.md)。
+`0.3.0rc9` 以隔离 QA12 验收为基线，补充停止路径、诊断及明细排版优化。已验证范围与未完成项见 [验收与限制](acceptance.md)。
 
 ## 使用方式
 
@@ -47,7 +47,7 @@
 
 ## 维护与验证边界
 
-体验层兼容点包括 `TurnRunner._wire_turn_agent_callbacks`、sessions/reset/resume handler 和严格历史 owner 校验。加载检查签名，注册异常回滚，卸载恢复；callback 包装只作用于本插件 consumer，要求相同 session key 且每轮只绑定一个 Agent。话题媒体继续走原生上传与类型选择，仅在当前 chat/thread 归属完全匹配且缺少显式回复目标时补齐 anchor。当前固定 Hermes 0.22.1 的 21 个相关源码 hash 在 `feature-host-contract.json`，连同投递与归属验证形成 16 个静态方法检查。真实镜像 smoke 执行原生 callback wiring、媒体锚点和真实 session key 函数。
+体验层兼容点包括 `TurnRunner._wire_turn_agent_callbacks`、sessions/reset/resume handler 和严格历史 owner 校验。加载检查签名，注册异常回滚，卸载恢复；callback 包装只作用于本插件 consumer，要求相同 session key 且每轮只绑定一个 Agent。话题媒体继续走原生上传与类型选择，仅在当前 chat/thread 归属完全匹配且缺少显式回复目标时补齐 anchor。当前固定 Hermes 0.22.1 的 21 个相关源码 hash 在 `feature-host-contract.json`，连同投递、归属、入站和媒体验证形成 19 个静态方法检查。真实镜像 smoke 执行原生 callback wiring、媒体锚点、session key 与停止入口。
 
 离线预览的运行统计来自合成 agent 和本实现的 telemetry；会话按钮演示使用同一个 schema 2.0 renderer 与本地演示状态。它不是飞书客户端，也不会调用真实会话或网络接口。
 

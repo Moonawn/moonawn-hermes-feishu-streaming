@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "moonawn-hermes-feishu-streaming"
-version = "0.3.0rc8"
+version = "0.3.0rc9"
 description = "Python-native Feishu streaming interaction plugin for Hermes, with sessions, parallel tasks, Agentloop and usage metrics"
 requires-python = ">=3.11"
 dependencies = []

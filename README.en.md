@@ -16,7 +16,7 @@
 
 Keep the answer readable and expand execution details when needed. Model, tokens, elapsed time and average output rate share a compact footer. Resume a previous session or open another thread for a separate task.
 
-**Current version: `0.3.0rc8` prerelease. Compatibility target: Hermes 0.22.1.**
+**Current version: `0.3.0rc9` prerelease. Compatibility target: Hermes 0.22.1.**
 
 ![Hermes Feishu: streamed answers and independent conversations](assets/cover.png)
 
@@ -53,9 +53,20 @@ Sessions use native Hermes context and permissions. A running session cannot be 
 
 </details>
 
-UI images use synthetic data rendered by the local demo. Feishu controls the actual client fonts, themes and component appearance.
+The light UI images above use synthetic data rendered by the local demo. Feishu controls the actual client fonts, themes and component appearance.
+
+<details>
+<summary><strong>Actual Chrome Web interaction: rounds and individual calls</strong></summary>
+
+![Agentloop disclosure in the actual Feishu Web client](assets/feishu-web-demo.gif)
+
+A dedicated bot executed a task using fictional event data. This GIF combines three genuine interaction screenshots to show disclosure levels, not generation speed. Metrics are unaltered. Test-environment latency and a lingering native progress notification are documented in [verification and limits](docs/acceptance.md). [Static image](assets/feishu-web.png).
+
+</details>
 
 ## Quick start
+
+Download the [prerelease ZIP and SHA-256](https://github.com/Moonawn/moonawn-hermes-feishu-streaming/releases/tag/v0.3.0rc9), then follow [installation and rollback](docs/installation.md) for an isolated test instance.
 
 Requires **Python 3.11+, Unix and Hermes 0.22.1**. The Python plugin reuses the host's native Feishu SDK, authentication and permissions.
 
@@ -66,7 +77,7 @@ python3 scripts/verify.py
 python3 scripts/build_release.py
 ```
 
-This verifies the source and builds `dist/moonawn-feishu-0.3.0rc8.zip` with a SHA-256 manifest. It does not install the plugin or connect a bot.
+This verifies the source and builds `dist/moonawn-feishu-0.3.0rc9.zip` with a SHA-256 manifest. It does not install the plugin or connect a bot.
 
 Use an isolated test instance first; follow [installation and rollback](docs/installation.md). One profile per process, with an in-process Python plugin. Do not let multiple streaming plugins own Feishu reply delivery at once. Detailed guides are currently in Chinese.
 
@@ -81,7 +92,7 @@ Remaining-time estimates learn from successful runs. At least five comparable sa
 <details>
 <summary><strong>Development checks and local preview</strong></summary>
 
-165 offline tests and Python 3.11–3.13 CI have passed. Separate pinned-host checks cover plugin loading/unloading and SDK integration.
+174 offline tests. CI covers Python 3.11–3.13 and the pinned Hermes 0.22.1 host, including plugin loading/unloading, native stop admission and SDK integration.
 
 ```sh
 python3 scripts/verify.py

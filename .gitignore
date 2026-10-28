@@ -33,6 +33,7 @@
 !/scripts/build_release.py
 !/scripts/build_preview.py
 !/scripts/verify.py
+!/scripts/doctor.py
 !/scripts/verify_container.py
 !/scripts/verify_host.py
 !/scripts/host_smoke.py

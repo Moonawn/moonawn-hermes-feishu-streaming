@@ -1,6 +1,6 @@
 # 安装、验证与回退
 
-`0.3.0rc8` 是首个公开发布候选，包含隔离 QA12 验收的流式实现与公开发布整理。它不是生产部署完成声明。
+`0.3.0rc9` 在 QA12 基础上增加停止入站隔离、运行诊断和 Agentloop 精修。它不是生产部署完成声明。
 
 ## 支持边界
 
@@ -8,6 +8,20 @@
 - 原生 Feishu adapter 与 `lark-oapi` SDK 由 Hermes 提供。固定宿主验收使用 SDK 1.7.5。
 - 不支持多个进程共享投递库、plugin host 子进程隔离或多个 profile 共进程。
 - 不能同时由 HLS、HFC 或其他 Feishu 流式插件接管答复。Hermes 内部接口升级后必须重测。
+
+## 下载与安装前诊断
+
+从 [v0.3.0rc9 预发布页](https://github.com/Moonawn/moonawn-hermes-feishu-streaming/releases/tag/v0.3.0rc9) 下载 ZIP、`SHA256SUMS` 和 `manifest.json`。将 ZIP 与校验文件放在同一目录，macOS 使用 `shasum -a 256 -c SHA256SUMS`，Linux 使用 `sha256sum -c SHA256SUMS`。
+
+解压后，使用 **Hermes 所用的 Python 解释器**，在插件目录执行（替换示例路径）：
+
+```sh
+python3 scripts/doctor.py --hermes-root /path/to/hermes-agent --hermes-home /path/to/test-home
+```
+
+首次安装前 `installed_plugin` 提示未安装是预期结果。诊断只解析版本、宿主源码和所选 home 的插件目录，不导入宿主，不读取凭据，不发送消息，也不更改配置。`--source-only` 可只做源码检查，不能据此确认 SDK 可用。
+
+启动测试网关并完成一条流式任务后，再运行同一命令并加 `--require-running`。它核对最近 20 秒的运行快照、实际注册 factory、加载版本和是否实际创建过流式 consumer。快照过期不会判作成功；`WARN` 项仍需核对，诊断通过不代表消息投递或审批全链路已验收。
 
 ## 构建与离线检查
 
@@ -31,6 +45,8 @@ python3 scripts/build_release.py
 原生 allowlist、权限与凭据由宿主管理；本项目不提供凭据、自动迁移配置或默认生产切换脚本。缺失必要方法/签名时拒绝加载；卸载会恢复兼容 hooks。
 
 ## 状态与回退
+
+运行时额外写入 `moonawn-feishu/health.json`：仅版本、布尔状态、计数、最近 128 次操作耗时和事件循环最大延迟，不包含正文、用户或聊天标识。快照每 5 秒更新，关闭时标记停止；它用于诊断，不是恢复依据。
 
 独立投递库位于所选 Hermes home 的 `moonawn-feishu/delivery.db`，权限为 0600，使用单进程锁。需要在线备份时调用 `Store.backup()`（SQLite backup API）；不要普通复制活动数据库。
 

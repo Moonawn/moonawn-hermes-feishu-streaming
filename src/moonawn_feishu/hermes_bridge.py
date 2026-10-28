@@ -57,6 +57,9 @@ def inspect_hermes(root: Path) -> dict:
         ("gateway/slash_commands_session.py", "GatewaySessionCommandsMixin", "_same_origin_chat", {"current", "origin"}),
         ("plugins/platforms/feishu/adapter.py", "FeishuAdapter", "send", {"chat_id", "content", "reply_to", "metadata"}),
         ("plugins/platforms/feishu/adapter.py", "FeishuAdapter", "edit_message", {"chat_id", "message_id", "content", "finalize"}),
+        ("plugins/platforms/feishu/adapter.py", "FeishuAdapter", "_handle_message_with_guards", {"event"}),
+        ("plugins/platforms/feishu/adapter.py", "FeishuAdapter", "_send_uploaded_key", {"chat_id", "reply_to", "metadata", "caption", "key_msg_type", "key_payload", "media_tag"}),
+        ("gateway/platforms/base.py", "BasePlatformAdapter", "handle_message", {"event"}),
         ("gateway/platforms/base.py", "BasePlatformAdapter", "_record_delivery_obligation", {"event", "session_key", "text_content", "delivery_adapter", "is_ephemeral_response"}),
         ("gateway/platforms/base.py", "BasePlatformAdapter", "_send_retry_is_final", {"result"}),
         ("gateway/stream_consumer.py", "StreamConsumer", "finish", {"final_text"}),
@@ -69,8 +72,13 @@ def inspect_hermes(root: Path) -> dict:
     for path, cls, method, expected in requirements:
         target = root / path
         passed = False
-        if target.exists():
+        reason = 'missing_source'
+        try:
             tree = ast.parse(target.read_text())
+        except (OSError, SyntaxError, UnicodeError):
+            tree = None
+        if tree is not None:
+            reason = 'missing_method_or_parameters'
             for node in ast.walk(tree):
                 # Consumer class may carry a platform prefix across releases;
                 # verify method + actual class name in the report, no silent skip.
@@ -79,7 +87,11 @@ def inspect_hermes(root: Path) -> dict:
                         if isinstance(member, (ast.FunctionDef, ast.AsyncFunctionDef)) and member.name == method:
                             args = {a.arg for a in member.args.args + member.args.kwonlyargs + member.args.posonlyargs}
                             passed = expected <= args
-        results.append({"file": path, "method": method, "passed": passed})
+                            if method == '__init__' and cls == 'StreamConsumer':
+                                allowed = {'self', 'adapter', 'chat_id', 'config', 'metadata', 'on_new_message',
+                                           'on_before_finalize', 'initial_reply_to_id', 'run_still_current'}
+                                passed = passed and args <= allowed
+        results.append({"file": path, "method": method, "passed": passed, 'reason': '' if passed else reason})
     return {"static_surface_passed": all(x["passed"] for x in results), "checks": results,
             "live_integration_verified": False,
             "remaining": ["real CardKit schema/read-back acceptance", "live approval and media passthrough"]}

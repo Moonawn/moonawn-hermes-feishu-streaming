@@ -1,6 +1,6 @@
 name: moonawn-feishu
 label: Hermes 飞书流式交互
 kind: platform
-version: 0.3.0rc8
+version: 0.3.0rc9
 description: 基于 Python 的 Hermes 飞书流式交互插件，支持流式卡片、多会话与并行任务、Agentloop 展示及 Token／耗时统计。
 author: Moonawn
